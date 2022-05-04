@@ -6,6 +6,7 @@ import (
 	"github.com/andtkach/demogobank/logger"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
+	"strconv"
 )
 
 type CustomerRepositoryDb struct {
@@ -45,6 +46,24 @@ func (d CustomerRepositoryDb) ById(id string) (*Customer, *errs.AppError) {
 			return nil, errs.NewUnexpectedError("Unexpected database error")
 		}
 	}
+	return &c, nil
+}
+
+func (d CustomerRepositoryDb) Save(c Customer) (*Customer, *errs.AppError) {
+	sqlInsert := "INSERT INTO customers (name, date_of_birth, city, zipcode) values (?, ?, ?, ?)"
+
+	result, err := d.client.Exec(sqlInsert, c.Name, c.DateofBirth, c.City, c.Zipcode)
+	if err != nil {
+		logger.Error("Error while creating new customer: " + err.Error())
+		return nil, errs.NewUnexpectedError("Unexpected error from database")
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		logger.Error("Error while getting last insert id for new customer: " + err.Error())
+		return nil, errs.NewUnexpectedError("Unexpected error from database")
+	}
+	c.Id = strconv.FormatInt(id, 10)
 	return &c, nil
 }
 

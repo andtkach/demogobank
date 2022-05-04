@@ -38,4 +38,18 @@ func (c Customer) ToDto() dto.CustomerResponse {
 type CustomerRepository interface {
 	FindAll(status string) ([]Customer, *errs.AppError)
 	ById(string) (*Customer, *errs.AppError)
+	Save(customer Customer) (*Customer, *errs.AppError)
+}
+
+func NewCustomer(name, city, zipcode, dateOfBirth string) Customer {
+	return Customer{
+		Name:        name,
+		City:        city,
+		Zipcode:     zipcode,
+		DateofBirth: dateOfBirth,
+	}
+}
+
+func (c Customer) ToNewCustomerResponseDto() *dto.NewCustomerResponse {
+	return &dto.NewCustomerResponse{CustomerId: c.Id}
 }

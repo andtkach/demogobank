@@ -6,4 +6,5 @@ DB_PASSWORD=mysqlrootpass \
 DB_ADDRESS=localhost \
 DB_PORT=3306 \
 DB_NAME=bankdb \
+AUTH_SERVER=localhost:8181 \
 go run main.go

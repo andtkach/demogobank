@@ -27,7 +27,7 @@ func (a AuthMiddleware) authorizationHandler() func(http.Handler) http.Handler {
 				if isAuthorized {
 					next.ServeHTTP(w, r)
 				} else {
-					appError := errs.AppError{http.StatusForbidden, "Unauthorized"}
+					appError := errs.AppError{Code: http.StatusForbidden, Message: "Unauthorized"}
 					writeResponse(w, appError.Code, appError.AsMessage())
 				}
 			} else {
@@ -38,10 +38,6 @@ func (a AuthMiddleware) authorizationHandler() func(http.Handler) http.Handler {
 }
 
 func getTokenFromHeader(header string) string {
-	/*
-	   token is coming in the format as below
-	   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50cyI6W.yI5NTQ3MCIsIjk1NDcyIiw"
-	*/
 	splitToken := strings.Split(header, "Bearer")
 	if len(splitToken) == 2 {
 		return strings.TrimSpace(splitToken[1])

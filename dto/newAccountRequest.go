@@ -12,8 +12,8 @@ type NewAccountRequest struct {
 }
 
 func (r NewAccountRequest) Validate() *errs.AppError {
-	if r.Amount < 5000 {
-		return errs.NewValidationError("To open a new account you need to deposit atleast 5000.00")
+	if r.Amount < 0 {
+		return errs.NewValidationError("Amount should be greater than 0")
 	}
 	if strings.ToLower(r.AccountType) != "saving" && strings.ToLower(r.AccountType) != "checking" {
 		return errs.NewValidationError("Account type should be checking or saving")

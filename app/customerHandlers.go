@@ -2,6 +2,7 @@ package app
 
 import (
 	"encoding/json"
+	"github.com/andtkach/demogobank/dto"
 	"github.com/andtkach/demogobank/service"
 	"github.com/gorilla/mux"
 	"net/http"
@@ -15,7 +16,7 @@ func (ch *CustomerHandlers) getAllCustomers(w http.ResponseWriter, r *http.Reque
 
 	status := r.URL.Query().Get("status")
 
-	customers, err := ch.service.GetAllCustomer(status)
+	customers, err := ch.service.GetAllCustomers(status)
 
 	if err != nil {
 		writeResponse(w, err.Code, err.AsMessage())
@@ -24,15 +25,30 @@ func (ch *CustomerHandlers) getAllCustomers(w http.ResponseWriter, r *http.Reque
 	}
 }
 
-func (ch *CustomerHandlers) getCustomer(w http.ResponseWriter, r *http.Request) {
+func (ch *CustomerHandlers) getOneCustomer(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["customer_id"]
 
-	customer, err := ch.service.GetCustomer(id)
+	customer, err := ch.service.GetOneCustomer(id)
 	if err != nil {
 		writeResponse(w, err.Code, err.AsMessage())
 	} else {
 		writeResponse(w, http.StatusOK, customer)
+	}
+}
+
+func (ch *CustomerHandlers) createCustomer(w http.ResponseWriter, r *http.Request) {
+	var request dto.NewCustomerRequest
+	err := json.NewDecoder(r.Body).Decode(&request)
+	if err != nil {
+		writeResponse(w, http.StatusBadRequest, err.Error())
+	} else {
+		account, appError := ch.service.CreateCustomer(request)
+		if appError != nil {
+			writeResponse(w, appError.Code, appError.AsMessage())
+		} else {
+			writeResponse(w, http.StatusCreated, account)
+		}
 	}
 }
 

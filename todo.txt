@@ -1,0 +1,24 @@
+
+
+Customer
+- Create customer
+- Update customer
+- Delete customer (soft delete)
+
+Account
+- Get all accounts
+- Get one account by id
+- Create account
+- Update account
+- Delete account (soft delete)
+- Make transaction
+
+
+Start both go apps from docker compose
+Rename domain objects and database columns and in json response and in env variables
+Add server name to logs messages
+Add user id to the refresh_token_store
+
+Auth
+Register new user account
+Disable user account
