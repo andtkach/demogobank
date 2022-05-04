@@ -18,8 +18,8 @@ func sanityCheck() {
 		"SERVER_ADDRESS",
 		"SERVER_PORT",
 		"DB_USER",
-		"DB_PASSWD",
-		"DB_ADDR",
+		"DB_PASSWORD",
+		"DB_ADDRESS",
 		"DB_PORT",
 		"DB_NAME",
 	}
@@ -74,8 +74,8 @@ func Start() {
 
 func getDbClient() *sqlx.DB {
 	dbUser := os.Getenv("DB_USER")
-	dbPasswd := os.Getenv("DB_PASSWD")
-	dbAddr := os.Getenv("DB_ADDR")
+	dbPasswd := os.Getenv("DB_PASSWORD")
+	dbAddr := os.Getenv("DB_ADDRESS")
 	dbPort := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")
 
